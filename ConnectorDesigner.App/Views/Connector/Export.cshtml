@@ -1,0 +1,58 @@
+﻿@model ConnectorDesigner.App.Models.MailSender
+@{
+    ViewBag.Title = "Export";
+}
+
+<div class="container remove-padding">
+
+    <div class="col-md-5 remove-padding" style="margin-top:50px;">
+
+        <div class="row">
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RecipentEmail, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.RecipentEmail, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.RecipentEmail)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Message, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(m => m.Message, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Message)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-6 col-md-6">
+                            <input type="submit" class="btn btn-info" value="Send" />
+                        </div>
+                    </div>
+                </div>
+              
+
+            }
+        </div>
+
+    </div>
+
+    <div class="col-md-7 remove-padding">
+        <object id="pdf" width="612px" style="float: right;border-bottom: 2px solid rgb(82, 86, 89);" height="842px" type="application/pdf" data="@Url.Action("GetConfigurationPDF","Connector")"></object>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

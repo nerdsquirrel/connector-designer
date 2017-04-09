@@ -1,0 +1,286 @@
+﻿@model ConnectorDesigner.App.Models.GroupViewModel
+@{
+    ViewBag.Title = "Configure";
+}
+
+<div class="container remove-padding" style="margin-top: 8px;">
+
+    <div class="col-md-3 remove-padding">
+
+        <div class="cable-type btn-group" style="width: 100%;height: 172px !important;">
+            <h5 style="background-color: #008CBA; padding: 10px 0px 10px 10px; margin:0px 0px 10px 0px; height:30px; color: white;font-weight:bold;">Select Left End Connector Series</h5>
+            <div id="leftGroup" style="padding-left: 10px;margin-bottom: 10px;">
+                @foreach (var end in Model.LeftEnds)
+                {
+                <button class="btn btn-info custom" name="left @end.Id" onclick="connector.loadLeftEndImage(@end.Id );">
+                    @end.Name
+                </button>
+                }
+            </div>
+        </div>
+
+        <div style="margin: 8px 0px 5px 0px; text-align: center; background: #008CBA; color: #fff; border-radius:2px; border: 1px solid #008CBA; height: 25px; padding-top: 5px; font-size: 12px; margin-bottom: 4px; ">
+            <b>Select Connector Pattern Left</b>
+        </div>
+
+        <div class="cable-images left-end">
+
+        </div>
+        <button class="btn btn-info" id="btnAddImageLeft" onclick="chooseFile('fileInputLeft');" style="margin: 10px 0px 0px 60px;font-size:12px;display:none;">Add new Image</button>
+
+        <div style="display:none;">
+            <input type="file" id="fileInputLeft" />
+            <input type="file" id="fileInputRight" />
+        </div>
+       
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <center>
+                <button data-toggle="modal" data-target="#resetModal" class="btn btn-danger" style="margin-top: 10px;">
+                    <span class="glyphicon glyphicon-refresh"></span> Reset
+                </button>
+            </center>
+           
+        </div>
+
+        @Html.Partial("_resetModal")
+
+        <div class="connectorType">
+            <div class="row">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-5 connectorType-left">
+
+                </div>
+                <div class="col-md-5 connectorType-right">
+
+                </div>
+            </div>
+
+        </div>
+
+        @Html.Partial("_cablesList")
+
+    </div>
+
+    <div class="col-md-3 remove-padding">
+
+        <div class="cable-type btn-group" style="width: 100%;height: 172px !important;">
+            <h5 style="background-color: #008CBA; font-weight: bold; padding: 10px 0px 10px 10px; margin: 0px 0px 10px 0px; height: 30px; color: white;">Select Right End Connector Series</h5>
+            <div id="rightGroup" style="padding-left: 10px;margin-bottom: 10px;">
+                @foreach (var end in Model.RightEnds)
+                {
+                    <button class="btn btn-info custom" name="right @end.Id" onclick="connector.loadRightEndImage(@end.Id )">
+                        @end.Name
+                    </button>
+                }
+
+                <button class="btn custom" name="" onclick="connector.implementNone();" style="background-color: lightblue; color:#fff;" >
+                    none
+                </button>
+
+            </div>
+        </div>
+
+        <div style="margin: 8px 0px 5px 0px; text-align: center; background: #008CBA; color: #fff; border-radius:2px; border: 1px solid #008CBA; height: 25px; padding-top: 5px; font-size: 12px; margin-bottom: 4px; ">
+            <b>Select Connector Pattern Right</b>
+        </div>
+
+        <div class="cable-images right-end">
+
+        </div>
+
+        <div class="none">
+            <center>
+                <img src="~/Content/connectorEndImg/Right/none/1.jpg" height="90" />
+            </center>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td colspan="2">Enter the value for</td>
+                        <td>Tolerances Standard</td>
+                        <td>Tolerances Specific</td>
+                    </tr>
+                    <tr>
+                        <td>L1</td>
+                        <td><input id="configuration_l1" name="currentConfiguration.l1" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                        <td rowspan="3">
+                            <input id="standardTolerance" name="currentConfiguration.standardTolerance" value="true" type="checkbox"><input name="_currentConfiguration.standardTolerance" value="on" type="hidden"><br>
+                           
+                        </td>
+                        <td><input id="configuration_toleranceL1" name="currentConfiguration.toleranceL1" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>L2</td>
+                        <td><input id="configuration_l2" name="currentConfiguration.l2" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                        <td><input id="configuration_toleranceL2" name="currentConfiguration.toleranceL2" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>L3</td>
+                        <td><input id="configuration_l3" name="currentConfiguration.l3" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                        <td><input id="configuration_toleranceL3" name="currentConfiguration.toleranceL3" class="ftext" style="width: 42px" value="" size="5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            Or just cut&nbsp;<input id="justCut" name="currentConfiguration.justCut" value="true" type="checkbox"><input name="_currentConfiguration.justCut" value="on" type="hidden">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="cableCutError"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button class="btn btn-info" id="btnAddImageRight" onclick="chooseFile('fileInputRight');"  style="margin: 10px 0px 0px 60px;font-size:12px; display:none;">Add new Image</button>
+
+
+    </div>
+
+</div>
+
+<div class="container remove-padding" style="margin-top: 8px;">
+
+    <div class="col-md-3 remove-padding cable-type" id="leftRed">
+        <br />        
+        <p style="margin-left:20px;">
+            <span style="color:red;margin-left:10px; font-size:12px;display:none;" class="redtext-lefttype"> * select left connector end first </span>
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <a id="leftConnectorSelector" onclick="connector.checkLeftTypeValidity();" data-toggle="modal" href="" style="font-weight: bold; color: #000;">
+            Select Connector Type Left </a>
+            
+        </p>  
+        
+        <b style="margin-left: 20px;" class="selected-leftend-desc"> Selected: none</b>   
+    </div>
+
+    <div class="col-md-6" style="margin: 0px; padding: 0px 15px 0px 15px;">
+        <div class="cable-type" id="middleRed">
+            <br />
+            <p style="margin-left:20px;">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <a data-toggle="modal" id="cableLink" data-target="#cableModal" style="font-weight: bold; color: #000;">Select cable</a>
+            </p>
+            <p style="margin-left: 30px;font-weight:bold;" name="1" class="selected-cable-desc">Selected: none</p>
+        </div>
+
+    </div>
+
+    <div class="col-md-3 remove-padding cable-type" id="rightRed">
+        <br />
+        <p style="margin-left:20px;">
+            <span style="color:red;margin-left:10px; font-size:12px;display:none;" class="redtext-righttype"> * select right connector end first </span>
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <a data-toggle="modal" id="rightConnectorSelector" onclick="connector.checkRightTypeValidity();" href="" style="font-weight: bold; color: #000;">Select Connector Type Right</a>
+        </p>
+        <b style="margin-left: 20px;" class="selected-rightend-desc">Selected: none</b>
+    </div>
+
+    @Html.Partial("_leftConnectorTypeList")
+    @Html.Partial("_rightConnectorTypeList")
+</div>
+
+<div class="container remove-padding" style="margin-top: 8px;">
+
+    <div class="col-md-3 remove-padding cable-type configuration-name">
+        <br />
+        <p class="square" style="margin-left:20px;">
+            <span><b style="font-weight: bold;">Configuration name</b></span>
+        </p>
+        <p style="margin-left:20px;font-size:12px;">
+            Enter a name for your configured assembly
+            <input type="text" />
+        </p>
+    </div>
+
+    <div class="col-md-6" style="margin: 0px; padding: 0px 15px 0px 15px;">
+
+        <div class="cable-type length-config">
+
+            <p style="margin:5px 0px 5px 20px;">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <a style="font-weight: bold; color: #000;">Enter cable assembly length</a>
+            </p>
+
+            <div class="row">
+                <div class="col-md-3" style="text-align: center">
+                    <b style="font-size: 11px;">Length<span style="color:red;font-size:14px;">*</span> :</b>
+                </div>
+                <div class="col-md-9">
+                    <input class="unit-length" type="text" />
+                    <span id="lengthError" style="color:red;"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3" style="text-align: center">
+                    <b style="font-size: 11px;">Metrics<span style="color:red;font-size:14px;">*</span> :</b>
+                </div>
+                <div class="col-md-9 unit-radio">
+                    <p style="">
+                        <input name="inches" value="1" type="radio" /> inches &nbsp;&nbsp;
+                        <input name="feet" value="2" type="radio" /> feet &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input name="mm" value="3" type="radio" /> mm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input name="meter" value="4" type="radio" /> meter
+                    </p>
+                </div>
+            </div>
+
+            <p style="margin-right:25px;float:right;"><button style="font-size:11px;" class="btn btn-info" onclick="connector.checkLengthValidation();">Apply</button></p>
+            <br />
+
+            <div class="row tolerance">
+
+                <div class="col-md-5">
+                    <p id="stdTolerance" style="margin-left: 10px;"></p>
+                </div>
+                <div class="col-md-5">
+                    <span>Your requested tolerance: <input style="width:60px;" type="text" /></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 remove-padding cable-type">
+        <br />
+        <p class="square" style="margin-left:20px;">
+            <span><b style="font-weight: bold;">Test your configured assembly</b></span>
+        </p>
+
+        <p style="margin-left:20px;">
+            <span><b style="font-weight: bold;">Test Result</b></span>
+            <img id="testImg" style="margin-left:50px;" src="/content/image/ic_test-notok.gif" />
+        </p>
+
+        <div>
+            <button onclick="connector.checkout();" class="btn btn-info" style="float:right;margin: 10px 20px 0px 0px;font-size: 11px;">check configuration</button>
+        </div>
+
+
+        <p id="goBasket" style="margin-left:20px;display: none;">
+            <span class="glyphicon glyphicon-ok"></span>
+            <a onclick="connector.export();" style="font-weight: bold;">Go to basket</a>
+        </p>
+
+    </div>    
+   
+</div>
+
+@section scripts{
+    <script src="~/Scripts/fabric.js"></script>
+    <script src="~/Scripts/jspdf.js"></script>
+    <script src="~/Scripts/connector/connector.configure.js"></script>   
+    <script>      
+        function chooseFile(id) {
+            $("#"+id).click();
+        }
+        window.selectedLeftEndIndex;
+        window.selectedRightEndIndex;
+       
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <div class="container header">
+        <div class="logoslogan">
+            <div class="logo">
+                <img alt="Huber+Suhner" border="0" src="~/Content/image/tactron-logo-claim.png" width="200" height="30">
+            </div>
+            <div class="slogan">
+                @*<img alt="Excellence in assembly configuration" border="0" src="~/Content/image/slogan.gif" width="400" height="23">*@
+                <p style="font-size: 20px;color: brown;font-style: italic;">TACTRON RF CABLE CONFIGURATION</p>
+            </div>
+        </div>        
+    </div>
+
+    @*<div class="container topnav">
+
+    </div>*@
+
+    @RenderBody()
+
+    <div class="container remove-padding" style="display:none;">         
+        <footer>
+          
+            <div class="footlinks-opt1">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td width="20%" align="left"></td>
+                        <td width="60%" align="center">
+                            <a href="http://www.hubersuhner.com/en/SpecialPages/Privacy-Policy" target="_blank">privacy policy</a>
+                        &nbsp;|&nbsp;
+                            <a href="http://www.hubersuhner.com/en/SpecialPages/Disclaimer" target="_blank">disclaimer</a> 
+                        TACTRON ELEKTRONIK
+                        </td>
+                        <td width="20%" align="right">
+                            <a class="bolded" href="mailto: rf.webpcf@hubersuhner.com">Comments?</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
